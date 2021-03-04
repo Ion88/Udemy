@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 
 import IngredientForm from "./IngredientForm";
 import IngredientList from "./IngredientList";
@@ -8,26 +8,12 @@ const Ingredients = () => {
   const [userIndgredients, setUserIngredients] = useState([]);
 
   useEffect(() => {
-    fetch(
-      "https://react-hooks-update-ffadb-default-rtdb.europe-west1.firebasedatabase.app/ingredients.json"
-    )
-      .then((response) => response.json())
-      .then((responseData) => {
-        const loadedIngredients = [];
-        for (const key in responseData) {
-          loadedIngredients.push({
-            id: key,
-            title: responseData[key].title,
-            amount: responseData[key].amount,
-          });
-        }
-        setUserIngredients(loadedIngredients);
-      });
-  }, []);
-
-  useEffect(() => {
     console.log("RENDERING INGREDIENTS", userIndgredients);
   }, [userIndgredients]);
+
+  const filteredIngredientsHandler = useCallback((filteredIngredients) => {
+    setUserIngredients(filteredIngredients);
+  }, []);
 
   const addIngredientHandler = (ingredient) => {
     fetch(
@@ -60,7 +46,7 @@ const Ingredients = () => {
       <IngredientForm onAddIngredient={addIngredientHandler} />
 
       <section>
-        <Search />
+        <Search onLoadIngredients={filteredIngredientsHandler} />
         <IngredientList
           ingredients={userIndgredients}
           onRemoveItem={removeIngredientHandler}
