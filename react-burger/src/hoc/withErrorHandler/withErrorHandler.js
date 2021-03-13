@@ -1,4 +1,4 @@
-import React, { Fragment, Component } from "react";
+import React, { Component, Fragment } from "react";
 
 import Modal from "../../components/UI/Modal/Modal";
 
@@ -7,26 +7,29 @@ const withErrorHandler = (WrappedComponent, axios) => {
     state = {
       error: null,
     };
-    componentDidMount() {
-      this.reqIncerptors = axios.interceptors.request.use((req) => {
+
+    componentWillMount() {
+      this.reqInterceptor = axios.interceptors.request.use((req) => {
         this.setState({ error: null });
         return req;
       });
-      this.resIncerptors = axios.interceptors.response.use(
+      this.resInterceptor = axios.interceptors.response.use(
         (res) => res,
         (error) => {
           this.setState({ error: error });
         }
       );
     }
+
     componentWillUnmount() {
-      axios.interceptors.request.eject(this.reqIncerptors);
-      axios.interceptors.request.eject(this.resIncerptors);
+      axios.interceptors.request.eject(this.reqInterceptor);
+      axios.interceptors.response.eject(this.resInterceptor);
     }
 
     errorConfirmedHandler = () => {
       this.setState({ error: null });
     };
+
     render() {
       return (
         <Fragment>
@@ -36,7 +39,7 @@ const withErrorHandler = (WrappedComponent, axios) => {
           >
             {this.state.error ? this.state.error.message : null}
           </Modal>
-          <WrappedComponent {...this.props} />;
+          <WrappedComponent {...this.props} />
         </Fragment>
       );
     }
