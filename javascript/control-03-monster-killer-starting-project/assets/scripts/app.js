@@ -32,17 +32,37 @@ function writeToLog(ev, val, monsterHealth, playerHealth) {
     finalMonsterHealth: monsterHealth,
     finalPlayerHealth: playerHealth,
   };
-  if (ev === LOG_EVENT_PLAYER_ATTACK) {
-    logEntry.target = "MONSTER";
-  } else if (ev === LOG_EVENT_STRONG_PLAYER_ATTACK) {
-    logEntry.target = "MONSTER";
-  } else if (ev === LOG_EVENT_MONSTER_ATTACK) {
-    logEntry.target = "PLAYER";
-  } else if (ev === LOG_EVENT_PLAYER_HEAL) {
-    logEntry.target = "PLAYER";
-  } else if (ev === LOG_EVENT_GAME_OVER) {
-    logEntry;
+  switch (ev) {
+    case LOG_EVENT_PLAYER_ATTACK:
+      logEntry.target = "MONSTER";
+      break;
+    case LOG_EVENT_STRONG_PLAYER_ATTACK:
+      logEntry.target = "MONSTER";
+      break;
+    case LOG_EVENT_MONSTER_ATTACK:
+      logEntry.target = "PLAYER";
+      break;
+    case LOG_EVENT_PLAYER_HEAL:
+      logEntry.target = "PLAYER";
+      break;
+    case LOG_EVENT_GAME_OVER:
+      logEntry;
+      break;
+    default:
+      logEntry = {};
   }
+
+  //   if (ev === LOG_EVENT_PLAYER_ATTACK) {
+  //     logEntry.target = "MONSTER";
+  //   } else if (ev === LOG_EVENT_STRONG_PLAYER_ATTACK) {
+  //     logEntry.target = "MONSTER";
+  //   } else if (ev === LOG_EVENT_MONSTER_ATTACK) {
+  //     logEntry.target = "PLAYER";
+  //   } else if (ev === LOG_EVENT_PLAYER_HEAL) {
+  //     logEntry.target = "PLAYER";
+  //   } else if (ev === LOG_EVENT_GAME_OVER) {
+  //     logEntry;
+  //   }
   battleLog.push(logEntry);
 }
 
@@ -150,7 +170,27 @@ function playerHealHandler() {
 }
 
 function printLogHandler() {
-  console.log(battleLog);
+  for (let i = 0; i < 3; i++) {
+    console.log("-------");
+  }
+
+  let j = 3;
+  do {
+    console.log(j);
+    j++;
+  } while (j < 3);
+
+  //   for (let i = 0; i < battleLog.length; i++) {
+  //     console.log(battleLog[i]);
+  //   }
+  let i = 0;
+  for (const log of battleLog) {
+    console.log(`#${i}`);
+    for (const key in log) {
+      console.log(`${key} => ${log[key]}`);
+    }
+    i++;
+  }
 }
 
 attackBtn.addEventListener("click", attackHandler);
