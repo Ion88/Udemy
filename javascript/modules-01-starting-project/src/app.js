@@ -1,4 +1,7 @@
+import * as _ from "lodash/array";
 import { ProjectList } from "./App/ProjectList.js";
+
+console.log(_.difference([0, 1], [1, 2]));
 
 class App {
   static init() {
