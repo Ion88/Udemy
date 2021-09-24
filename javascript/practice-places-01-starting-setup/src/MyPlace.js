@@ -1,11 +1,12 @@
 import { Map } from "./UI/Map";
+import sanitizeHtml from "sanitize-html";
 
 class LoadedPlace {
   constructor(coordinates, address) {
     new Map(coordinates);
 
     const headerTitle = document.querySelector("header h1");
-    headerTitle.textContent = address;
+    headerTitle.innerHTML = sanitizeHtml(address);
   }
 }
 
@@ -18,15 +19,15 @@ const queryParam = url.searchParams;
 // const address = queryParam.get("address");
 const locId = queryParam.get("location");
 fetch("http://localhost:3000/location/" + locId)
-  .then((response) => {
+  .then(response => {
     if (response.status === 404) {
       throw new Error("Could not find location!");
     }
     return response.json();
   })
-  .then((data) => {
+  .then(data => {
     new LoadedPlace(data.coordinates, data.address);
   })
-  .catch((err) => {
+  .catch(err => {
     alert(err.message);
   });
