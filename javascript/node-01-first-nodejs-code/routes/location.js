@@ -4,8 +4,7 @@ const MongoClient = mongodb.MongoClient;
 
 const router = express.Router();
 
-const url =
-  "mongodb+srv://Ion:KiJkUmHfYnL9D6r3@cluster0.uxht0.mongodb.net/locations?retryWrites=true&w=majority";
+const url = "";
 
 const client = new MongoClient(url);
 
